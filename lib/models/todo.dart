@@ -33,7 +33,9 @@ class Todo {
   }
 
   set date(String newDate) {
-    _date = newDate;
+    if (newDate != null) {
+      _date = newDate;
+    }
   }
 
   Map<String, dynamic> toMap() {
@@ -43,11 +45,9 @@ class Todo {
     map["description"] = _description;
     map["priority"] = _priority;
     map["date"] = _date;
-
     if (_id != null) {
       map["id"] = _id;
     }
-
     return map;
   }
 
