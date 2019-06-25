@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/utils/dbhelper.dart';
 import 'package:flutter_todo/models/todo.dart';
+import 'package:flutter_todo/screens/tododetail.dart';
 
 class TodoList extends StatefulWidget {
   @override
@@ -21,11 +22,26 @@ class TodoListState extends State<TodoList> {
     return Scaffold(
       body: todoListItems(),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+          navigateToDetail(Todo('', 3, ''));
+        },
         tooltip: "Add New Item",
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  Color getColor(int priority) {
+    switch (priority) {
+      case 1:
+        return Colors.red;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.green;
+      default:
+        return Colors.green;
+    }
   }
 
   ListView todoListItems() {
@@ -37,13 +53,14 @@ class TodoListState extends State<TodoList> {
           elevation: 2.0,
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: Colors.red,
-              child: Text(this.todos[position].id.toString()),
+              backgroundColor: getColor(this.todos[position].priority),
+              child: Text(this.todos[position].priority.toString()),
             ),
             title: Text(this.todos[position].title),
             subtitle: Text(this.todos[position].date),
             onTap: () {
-              debugPrint("Tapped on ${this.todos[position].id.toString()}");
+              // debugPrint("Tapped on ${this.todos[position].id.toString()}");
+              navigateToDetail(this.todos[position]);
             },
           ),
         );
@@ -57,7 +74,7 @@ class TodoListState extends State<TodoList> {
     final dbFuture = helper.initializeDb();
     dbFuture.then((result) {
 //      Todo todo = Todo(
-//          "Buy Apples", 3, today.toString(), "And make sure they are good");
+//          "Buy Oranges", 2, today.toString(), "And make sure they are good");
 //      helper.insertTodo(todo);
       final todosFuture = helper.getTodos();
       todosFuture.then((result) {
@@ -74,5 +91,12 @@ class TodoListState extends State<TodoList> {
         });
       });
     });
+  }
+
+  void navigateToDetail(Todo todo) async {
+    bool result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TodoDetail(todo)),
+    );
   }
 }
