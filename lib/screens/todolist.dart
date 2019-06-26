@@ -31,19 +31,6 @@ class TodoListState extends State<TodoList> {
     );
   }
 
-  Color getColor(int priority) {
-    switch (priority) {
-      case 1:
-        return Colors.red;
-      case 2:
-        return Colors.orange;
-      case 3:
-        return Colors.green;
-      default:
-        return Colors.green;
-    }
-  }
-
   ListView todoListItems() {
     return ListView.builder(
       itemCount: count,
@@ -93,10 +80,26 @@ class TodoListState extends State<TodoList> {
     });
   }
 
+  Color getColor(int priority) {
+    switch (priority) {
+      case 1:
+        return Colors.red;
+      case 2:
+        return Colors.orange;
+      case 3:
+        return Colors.green;
+      default:
+        return Colors.green;
+    }
+  }
+
   void navigateToDetail(Todo todo) async {
     bool result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => TodoDetail(todo)),
     );
+    if (result == true) {
+      getData();
+    }
   }
 }

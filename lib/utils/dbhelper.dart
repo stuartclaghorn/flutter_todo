@@ -70,7 +70,7 @@ class DbHelper {
 
     var result = await db.update(tblTodo, todo.toMap(),
         where: "$colId = ?", whereArgs: [todo.id]);
-
+    print(result);
     return result;
   }
 
@@ -80,6 +80,7 @@ class DbHelper {
     Database db = await this.db;
 
     result = await db.rawDelete('DELETE FROM $tblTodo where $colId = $id');
+    print(result);
     return result;
   }
 }

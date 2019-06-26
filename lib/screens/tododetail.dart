@@ -30,7 +30,7 @@ class TodoDetailState extends State {
   TodoDetailState(this.todo);
 
   final _priorities = ["High", "Medium", "Low"];
-  String _priority = "Low";
+  // String _priority = "Low";
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -71,6 +71,7 @@ class TodoDetailState extends State {
                 TextField(
                   controller: titleController,
                   style: textStyle,
+                  onChanged: (value) => this.updateTitle(),
                   decoration: InputDecoration(
                       labelText: "Title",
                       labelStyle: textStyle,
@@ -86,6 +87,7 @@ class TodoDetailState extends State {
                   child: TextField(
                     controller: descriptionController,
                     style: textStyle,
+                    onChanged: (value) => this.updateDescription(),
                     decoration: InputDecoration(
                         labelText: "Description",
                         labelStyle: textStyle,
@@ -96,7 +98,7 @@ class TodoDetailState extends State {
                 ),
                 ListTile(
                   title: DropdownButton<String>(
-                    value: _priority,
+                    value: retrievePriority(todo.priority),
                     style: textStyle,
                     items: _priorities.map((String value) {
                       return DropdownMenuItem<String>(
@@ -104,11 +106,7 @@ class TodoDetailState extends State {
                         child: Text(value),
                       );
                     }).toList(),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        _priority = newValue;
-                      });
-                    },
+                    onChanged: (value) => updatePriority(value),
                   ),
                 )
               ],
@@ -173,9 +171,9 @@ class TodoDetailState extends State {
         todo.priority = 3;
         break;
     }
-    setState(() {
-      _priority = value;
-    });
+//    setState(() {
+//      _priority = value;
+//    });
   }
 
   String retrievePriority(int value) {
